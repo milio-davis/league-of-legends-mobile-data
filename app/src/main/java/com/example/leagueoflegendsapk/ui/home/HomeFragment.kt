@@ -1,5 +1,8 @@
 package com.example.leagueoflegendsapk.ui.home
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +19,7 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -32,6 +36,10 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        sharedPref = requireActivity().getSharedPreferences("lolSharedPreferences", MODE_PRIVATE)
+        binding.txtSummonersNameHome.text = sharedPref!!.getString("summonersName","")
+
         return root
     }
 

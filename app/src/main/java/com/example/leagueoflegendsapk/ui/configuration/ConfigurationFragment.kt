@@ -1,4 +1,4 @@
-package com.example.leagueoflegendsapk.ui.notifications
+package com.example.leagueoflegendsapk.ui.configuration
 
 import android.os.Bundle
 import android.view.LayoutInflater

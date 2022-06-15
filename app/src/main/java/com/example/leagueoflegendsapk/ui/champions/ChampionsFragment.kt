@@ -1,4 +1,4 @@
-package com.example.leagueoflegendsapk.ui.dashboard
+package com.example.leagueoflegendsapk.ui.champions
 
 import android.os.Bundle
 import android.view.LayoutInflater

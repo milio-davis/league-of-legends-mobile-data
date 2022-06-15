@@ -1,4 +1,4 @@
-package com.example.leagueoflegendsapk.ui.home
+package com.example.leagueoflegendsapk.ui.index
 
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences

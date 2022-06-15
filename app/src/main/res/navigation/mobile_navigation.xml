@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.leagueoflegendsapk.ui.home.HomeFragment"
+        android:name="com.example.leagueoflegendsapk.ui.home.IndexFragment"
         android:label="@string/title_index"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_index" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.leagueoflegendsapk.ui.dashboard.DashboardFragment"
+        android:name="com.example.leagueoflegendsapk.ui.dashboard.ChampionsFragment"
         android:label="@string/title_champions"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_champions" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.leagueoflegendsapk.ui.notifications.NotificationsFragment"
+        android:name="com.example.leagueoflegendsapk.ui.notifications.ConfigurationFragment"
         android:label="@string/title_configuration"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_configuration" />
 </navigation>

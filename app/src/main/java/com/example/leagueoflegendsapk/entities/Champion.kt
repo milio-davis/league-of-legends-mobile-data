@@ -1,22 +1,10 @@
 package com.example.leagueoflegendsapk.entities
 
-import android.os.Parcel
-import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
-class Champion(nombre: String?) {
-    var nombre: String = ""
-
-    class Constants {
-        companion object {
-            /*
-            val cursoA = "A"
-             */
-        }
-    }
-
-    init {
-        this.nombre = nombre!!
-    }
-
+data class Champion(
+    @field:SerializedName("nombre") val nombre: String,
+    @field:SerializedName("imageUrl") val imageUrl: String
+    ) {
 
 }

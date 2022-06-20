@@ -15,7 +15,19 @@ import com.example.leagueoflegendsapk.adapters.ChampionRotationAdapter
 import com.example.leagueoflegendsapk.entities.Champion
 import com.google.android.material.snackbar.Snackbar
 import com.example.leagueoflegendsapk.R
-import org.w3c.dom.Text
+import com.example.leagueoflegendsapk.api.RiotService
+import com.example.leagueoflegendsapk.api.data.ChampionResponse
+import com.example.leagueoflegendsapk.api.data.RiotResponse
+import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
+import com.example.leagueoflegendsapk.databinding.FragmentHomeBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeFragment : Fragment() {
 
@@ -31,6 +43,10 @@ class HomeFragment : Fragment() {
 
     private lateinit var sharedPref: SharedPreferences
 
+    private lateinit var binding: FragmentHomeBinding
+
+    val apiKey = "RGAPI-68c755e8-7e2a-469e-9711-de8ea8797bcc"
+
     companion object {
         fun newInstance() = HomeFragment()
     }
@@ -40,25 +56,25 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        v =  inflater.inflate(R.layout.fragment_home, container, false)
+        binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        recContactos = v.findViewById(R.id.recyclerRotacionSemanal)
+        //v =  inflater.inflate(R.layout.fragment_home, container, false)
+
+        recContactos = binding.recyclerRotacionSemanal
 
         sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
-        v.findViewById<TextView>(R.id.txtSummonersNameHome).text = sharedPref.getString("summonersName", "")
+        binding.txtSummonersNameHome.text = sharedPref.getString("summonersName", "")
 
-        return v
+        return binding.root
     }
 
     override fun onStart() {
         super.onStart()
 
-        //Creo la Lista Dinamica
-        for (i in 1..5) {
-            championList.add(Champion("Pedro.$i"))
-            championList.add(Champion("Rodolfo.$i"))
-            championList.add(Champion("Emilio.$i"))
-        }
+        championList.add(Champion("Pedro","https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Caitlyn.png"))
+        championList.add(Champion("Rodolfo","https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Aatrox.png"))
+        championList.add(Champion("Emilio","https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Rammus.png"))
+
 
         //Configuración Obligatoria
 
@@ -78,6 +94,25 @@ class HomeFragment : Fragment() {
     fun onItemClick ( position : Int ) : Boolean{
         Snackbar.make(v,position.toString(),Snackbar.LENGTH_SHORT).show()
         return true
+    }
+
+    private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://la2.api.riotgames.com/lol/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private fun s(query:String){
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(RiotAPI::class.java).getWeeklyChampionRotation("platform/v3/champion-rotations?api_key=$apiKey")
+            val puppies = call.body()
+            if (call.isSuccessful) {
+                // show recycler
+            } else {
+                // error
+            }
+        }
     }
 
 }

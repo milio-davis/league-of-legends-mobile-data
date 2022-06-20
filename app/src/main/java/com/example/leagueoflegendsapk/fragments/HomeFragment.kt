@@ -3,10 +3,10 @@ package com.example.leagueoflegendsapk.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
@@ -14,18 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.leagueoflegendsapk.adapters.ChampionRotationAdapter
 import com.example.leagueoflegendsapk.entities.Champion
 import com.google.android.material.snackbar.Snackbar
-import com.example.leagueoflegendsapk.R
-import com.example.leagueoflegendsapk.api.RiotService
-import com.example.leagueoflegendsapk.api.data.ChampionResponse
-import com.example.leagueoflegendsapk.api.data.RiotResponse
 import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
 import com.example.leagueoflegendsapk.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -35,11 +29,13 @@ class HomeFragment : Fragment() {
 
     lateinit var recContactos : RecyclerView
 
-    var championList : MutableList<Champion> = ArrayList()
-
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     private lateinit var championRotationAdapter: ChampionRotationAdapter
+
+    private val championsList = mutableListOf<Champion>()
+
+    private val champions = mutableListOf<Champion>()
 
     private lateinit var sharedPref: SharedPreferences
 
@@ -71,11 +67,6 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        championList.add(Champion("Pedro","https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Caitlyn.png"))
-        championList.add(Champion("Rodolfo","https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Aatrox.png"))
-        championList.add(Champion("Emilio","https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Rammus.png"))
-
-
         //Configuración Obligatoria
 
         recContactos.setHasFixedSize(true)
@@ -83,12 +74,13 @@ class HomeFragment : Fragment() {
 
         recContactos.layoutManager = linearLayoutManager
 
-        championRotationAdapter = ChampionRotationAdapter(championList) { x ->
+        championRotationAdapter = ChampionRotationAdapter(championsList) { x ->
             onItemClick(x)
         }
 
         recContactos.adapter = championRotationAdapter
 
+        s()
     }
 
     fun onItemClick ( position : Int ) : Boolean{
@@ -96,21 +88,41 @@ class HomeFragment : Fragment() {
         return true
     }
 
-    private fun getRetrofit(): Retrofit {
+    private fun getRetrofitRiot(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://la2.api.riotgames.com/lol/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    private fun s(query:String){
+    private fun getRetrofitDdragon(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://ddragon.leagueoflegends.com/cdn/12.11.1/data/es_MX/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private fun s(){
         CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(RiotAPI::class.java).getWeeklyChampionRotation("platform/v3/champion-rotations?api_key=$apiKey")
-            val puppies = call.body()
+            val call1 = async { getFreeChampionIds() }
+
+            val ids = call1.await()
+            Log.d("RETRO", ids.toString())
+        }
+    }
+
+    private suspend fun getFreeChampionIds() {
+        val call = getRetrofitRiot().create(RiotAPI::class.java).getWeeklyChampionRotation("platform/v3/champion-rotations?api_key=$apiKey")
+        val callChampList = call.body()
+        requireActivity().runOnUiThread {
             if (call.isSuccessful) {
-                // show recycler
+                val championIds = callChampList?.freeChampionIds ?: emptyList()
+                Log.d("RETRO", championIds.toString())
+                championsList.clear()
+                //championsList.addAll(championIds)
+                //championRotationAdapter.notifyDataSetChanged()
             } else {
-                // error
+                Log.d("RETRO", "ERROR")
             }
         }
     }

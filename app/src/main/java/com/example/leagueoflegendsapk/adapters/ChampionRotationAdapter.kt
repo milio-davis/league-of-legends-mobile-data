@@ -7,15 +7,17 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leagueoflegendsapk.R
+import com.example.leagueoflegendsapk.databinding.ItemChampionRotationBinding
 import com.example.leagueoflegendsapk.entities.Champion
+import com.squareup.picasso.Picasso
 
 class ChampionRotationAdapter(
-    private var contactsList: MutableList<Champion>,
+    private var championsList: MutableList<Champion>,
     val onItemClick: (Int) -> Boolean
 ) : RecyclerView.Adapter<ChampionRotationAdapter.ChampionHolder>() {
 
     override fun getItemCount(): Int {
-        return contactsList.size
+        return championsList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChampionHolder {
@@ -25,7 +27,7 @@ class ChampionRotationAdapter(
 
     override fun onBindViewHolder(holder: ChampionHolder, position: Int) {
 
-        holder.setName(contactsList[position].nombre)
+        holder.setImage(championsList[position].imageUrl)
 
         holder.getCardLayout().setOnClickListener{
             onItemClick(position)
@@ -33,25 +35,20 @@ class ChampionRotationAdapter(
     }
 
     fun setData(newData: ArrayList<Champion>) {
-        this.contactsList = newData
+        this.championsList = newData
         this.notifyDataSetChanged()
     }
 
     class ChampionHolder (v: View) : RecyclerView.ViewHolder(v) {
 
-        private var view: View
+        val binding = ItemChampionRotationBinding.bind(v)
 
-        init {
-            this.view = v
-        }
-
-        fun setName(name: String) {
-            val txt: TextView = view.findViewById(R.id.txt_name_item)
-            txt.text = name
+        fun setImage(path: String) {
+            Picasso.get().load(path).into(binding.imageView)
         }
 
         fun getCardLayout (): CardView {
-            return view.findViewById(R.id.card_package_item)
+            return binding.cardPackageItem
         }
 
     }

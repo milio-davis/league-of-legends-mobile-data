@@ -13,17 +13,18 @@
         android:layout_height="180dp"
         android:layout_margin="15dp"
         android:elevation="20dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/txtTituloRotacionSemanal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Rotacion Semanal" />
+            android:text="Rotacion Semanal"
+            android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerRotacionSemanal"
@@ -34,6 +35,7 @@
             android:id="@+id/btnVerMasRotacionSemanal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Ver mas" />
     </LinearLayout>
 
@@ -50,7 +52,6 @@
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#E0E69D"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.tabs.TabItem
@@ -84,11 +85,12 @@
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/layoutHomeMisCampeones"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_margin="15dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/layoutHomeLineas"
         tools:layout_editor_absoluteX="15dp">
 
@@ -98,57 +100,32 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Mis mejores campeones"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTopMasteryChampions"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtTituloMejoresCampeones" />
+            android:layout_height="100dp" />
 
         <Button
             android:id="@+id/btnVerMasRotacionSemanal2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ver mas"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerTopMasteryChampions" />
+            android:layout_gravity="center"
+            android:text="Ver mas" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtSummonersNameHome"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutHomeMisCampeones" />
-
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSummonersNameHome"
-        app:layout_constraintVertical_bias="0.601" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.leagueoflegendsapk.databinding.FragmentHomeLanesBinding
 
-private const val ARG_OBJECT = "object"
-
 class HomeLanesFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeLanesBinding
@@ -19,6 +17,9 @@ class HomeLanesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeLanesBinding.inflate(layoutInflater)
+
+        val a = requireArguments().getInt("position",-1)
+        binding.txtChamp.text = a.toString()
 
         return binding.root
     }

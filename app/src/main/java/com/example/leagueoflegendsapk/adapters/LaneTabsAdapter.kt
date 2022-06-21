@@ -10,13 +10,11 @@ class LaneTabsAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 5
 
     override fun createFragment(position: Int): Fragment {
-        val ARG_OBJECT = "object"
 
         // Return a NEW fragment instance in createFragment(int)
         val fragment = HomeLanesFragment()
         fragment.arguments = Bundle().apply {
-            // Our object is just an integer :-P
-            putInt(ARG_OBJECT, position + 1)
+            putInt("position", position)
         }
         return fragment
     }

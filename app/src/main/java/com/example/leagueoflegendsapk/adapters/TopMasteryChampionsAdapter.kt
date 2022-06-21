@@ -11,10 +11,10 @@ import com.example.leagueoflegendsapk.databinding.ItemChampionRotationBinding
 import com.example.leagueoflegendsapk.entities.Champion
 import com.squareup.picasso.Picasso
 
-class ChampionRotationAdapter(
+class TopMasteryChampionsAdapter(
     private var championsList: MutableList<Champion>,
     val onItemClick: (Int) -> Boolean
-) : RecyclerView.Adapter<ChampionRotationAdapter.ChampionHolder>() {
+) : RecyclerView.Adapter<TopMasteryChampionsAdapter.ChampionHolder>() {
 
     override fun getItemCount(): Int {
         return championsList.size
@@ -32,11 +32,6 @@ class ChampionRotationAdapter(
         holder.getCardLayout().setOnClickListener{
             onItemClick(position)
         }
-    }
-
-    fun setData(newData: ArrayList<Champion>) {
-        this.championsList = newData
-        this.notifyDataSetChanged()
     }
 
     class ChampionHolder (v: View) : RecyclerView.ViewHolder(v) {

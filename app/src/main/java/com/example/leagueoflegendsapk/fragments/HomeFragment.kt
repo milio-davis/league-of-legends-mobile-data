@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leagueoflegendsapk.adapters.ChampionRotationAdapter
+import com.example.leagueoflegendsapk.adapters.TopMasteryChampionsAdapter
 import com.example.leagueoflegendsapk.entities.Champion
 import com.google.android.material.snackbar.Snackbar
 import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
@@ -20,28 +21,27 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeFragment : Fragment() {
 
-    lateinit var v: View
-
-    lateinit var recContactos : RecyclerView
-
-    private lateinit var linearLayoutManager: LinearLayoutManager
-
-    private lateinit var championRotationAdapter: ChampionRotationAdapter
-
-    private val championsList = mutableListOf<Champion>()
-
-    private val champions = mutableListOf<Champion>()
+    val apiKey = "RGAPI-f0abcc1c-6bbe-48db-b438-ebc17082fd41"
+    val summonerId = "6nwa1pkSeo2yUWI0gIFiD2wHVw21C71NQ2NyhnxN7B_XyZA"
 
     private lateinit var sharedPref: SharedPreferences
-
     private lateinit var binding: FragmentHomeBinding
 
-    val apiKey = "RGAPI-68c755e8-7e2a-469e-9711-de8ea8797bcc"
+    lateinit var recyclerRotacionSemanal : RecyclerView
+    private lateinit var championRotationAdapter: ChampionRotationAdapter
+
+    lateinit var recyclerTopMasteryChampions : RecyclerView
+    private lateinit var topMasteryChampionsAdapter: TopMasteryChampionsAdapter
+
+    private val championsList = mutableListOf<Champion>()
+    private lateinit var freeChampionIds: List<String>
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -54,9 +54,8 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        //v =  inflater.inflate(R.layout.fragment_home, container, false)
-
-        recContactos = binding.recyclerRotacionSemanal
+        recyclerRotacionSemanal = binding.recyclerRotacionSemanal
+        recyclerTopMasteryChampions = binding.recyclerTopMasteryChampions
 
         sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
         binding.txtSummonersNameHome.text = sharedPref.getString("summonersName", "")
@@ -67,47 +66,98 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Aatrox.png", ""))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Caitlyn.png", ""))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Rammus.png", ""))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Veigar.png", ""))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Zac.png", ""))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Xerath.png", ""))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Kayle.png", ""))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Xayah.png", ""))
+
         //Configuración Obligatoria
 
-        recContactos.setHasFixedSize(true)
-        linearLayoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-
-        recContactos.layoutManager = linearLayoutManager
-
+        // Recycler rotacion semanal
+        recyclerRotacionSemanal.setHasFixedSize(true)
+        recyclerRotacionSemanal.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
         championRotationAdapter = ChampionRotationAdapter(championsList) { x ->
             onItemClick(x)
         }
+        recyclerRotacionSemanal.adapter = championRotationAdapter
 
-        recContactos.adapter = championRotationAdapter
+        // Recycler top champions
+        recyclerTopMasteryChampions.setHasFixedSize(true)
+        recyclerTopMasteryChampions.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+        topMasteryChampionsAdapter = TopMasteryChampionsAdapter(championsList) { x ->
+            onItemClick(x)
+        }
+        recyclerTopMasteryChampions.adapter = topMasteryChampionsAdapter
 
-        s()
+        //championRotationAdapter.notifyDataSetChanged()
+
+        launchCoroutines()
     }
 
     fun onItemClick ( position : Int ) : Boolean{
-        Snackbar.make(v,position.toString(),Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.root,position.toString(),Snackbar.LENGTH_SHORT).show()
         return true
     }
 
     private fun getRetrofitRiot(): Retrofit {
+        val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logger)
+            .build()
         return Retrofit.Builder()
             .baseUrl("https://la2.api.riotgames.com/lol/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     private fun getRetrofitDdragon(): Retrofit {
+        val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(logger)
+            .build()
         return Retrofit.Builder()
             .baseUrl("https://ddragon.leagueoflegends.com/cdn/12.11.1/data/es_MX/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    private fun s(){
+    private fun launchCoroutines(){
         CoroutineScope(Dispatchers.IO).launch {
             val call1 = async { getFreeChampionIds() }
+            //val call2 = async { getChampions() }
+            //val call3 = async { getTopMasteryChampions() }
 
-            val ids = call1.await()
-            Log.d("RETRO", ids.toString())
+            Log.d("RETRO TEST", "1")
+        }
+    }
+
+    private suspend fun getTopMasteryChampions() {
+        val call = getRetrofitRiot().create(RiotAPI::class.java).getTopMasteryChampions("champion-mastery/v4/champion-masteries/by-summoner/$summonerId?api_key=$apiKey")
+        val champions = call.body()
+        requireActivity().runOnUiThread {
+            if (call.isSuccessful) {
+                Log.d("RETRO TEST", champions.toString())
+            } else {
+                Log.d("Error Retrofit", "Champions error")
+            }
+        }
+    }
+
+    private suspend fun getChampions() {
+        val call = getRetrofitDdragon().create(RiotAPI::class.java).getChampions("champion.json")
+        val champions = call.body()
+        requireActivity().runOnUiThread {
+            if (call.isSuccessful) {
+                Log.d("RETRO TEST", champions.toString())
+            } else {
+                Log.d("Error Retrofit", "Champions error")
+            }
         }
     }
 
@@ -116,13 +166,10 @@ class HomeFragment : Fragment() {
         val callChampList = call.body()
         requireActivity().runOnUiThread {
             if (call.isSuccessful) {
-                val championIds = callChampList?.freeChampionIds ?: emptyList()
-                Log.d("RETRO", championIds.toString())
-                championsList.clear()
-                //championsList.addAll(championIds)
-                //championRotationAdapter.notifyDataSetChanged()
+                freeChampionIds = callChampList?.freeChampionIds ?: emptyList()
+                Log.d("RETRO TEST", freeChampionIds.toString())
             } else {
-                Log.d("RETRO", "ERROR")
+                Log.d("Error Retrofit", "Free Champion Rotation error")
             }
         }
     }

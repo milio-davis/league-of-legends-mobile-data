@@ -11,12 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.example.leagueoflegendsapk.R
 import com.example.leagueoflegendsapk.adapters.ChampionRotationAdapter
+import com.example.leagueoflegendsapk.adapters.LaneTabsAdapter
 import com.example.leagueoflegendsapk.adapters.TopMasteryChampionsAdapter
 import com.example.leagueoflegendsapk.entities.Champion
 import com.google.android.material.snackbar.Snackbar
 import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
 import com.example.leagueoflegendsapk.databinding.FragmentHomeBinding
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -43,6 +47,9 @@ class HomeFragment : Fragment() {
     private val championsList = mutableListOf<Champion>()
     private lateinit var freeChampionIds: List<String>
 
+    private lateinit var laneTabsAdapter: LaneTabsAdapter
+    private lateinit var viewPager: ViewPager2
+
     companion object {
         fun newInstance() = HomeFragment()
     }
@@ -59,6 +66,22 @@ class HomeFragment : Fragment() {
 
         sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
         binding.txtSummonersNameHome.text = sharedPref.getString("summonersName", "")
+
+        viewPager = binding.pagerHomeLanes
+        viewPager.adapter = LaneTabsAdapter(this)
+        val tabLayout = binding.tabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = resources.getString(R.string.title_top)
+                1 -> tab.text = resources.getString(R.string.title_jungle)
+                2 -> tab.text = resources.getString(R.string.title_mid)
+                3 -> tab.text = resources.getString(R.string.title_bot)
+                4 -> tab.text = resources.getString(R.string.title_support)
+                else -> { // Note the block
+                    print("")
+                }
+            }
+        }.attach()
 
         return binding.root
     }

@@ -1,4 +1,4 @@
-package com.example.leagueoflegendsapk.fragments
+package com.example.leagueoflegendsapk.ui.index
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

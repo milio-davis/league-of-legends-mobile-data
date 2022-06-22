@@ -1,4 +1,4 @@
-package com.example.leagueoflegendsapk.fragments
+package com.example.leagueoflegendsapk.ui.index
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -19,7 +19,7 @@ import com.example.leagueoflegendsapk.adapters.TopMasteryChampionsAdapter
 import com.example.leagueoflegendsapk.entities.Champion
 import com.google.android.material.snackbar.Snackbar
 import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
-import com.example.leagueoflegendsapk.databinding.FragmentHomeBinding
+import com.example.leagueoflegendsapk.databinding.FragmentIndexBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
     val summonerId = "6nwa1pkSeo2yUWI0gIFiD2wHVw21C71NQ2NyhnxN7B_XyZA"
 
     private lateinit var sharedPref: SharedPreferences
-    private lateinit var binding: FragmentHomeBinding
+    private lateinit var binding: FragmentIndexBinding
 
     lateinit var recyclerRotacionSemanal : RecyclerView
     private lateinit var championRotationAdapter: ChampionRotationAdapter
@@ -58,7 +58,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentIndexBinding.inflate(layoutInflater)
 
         recyclerRotacionSemanal = binding.recyclerRotacionSemanal
         recyclerTopMasteryChampions = binding.recyclerTopMasteryChampions

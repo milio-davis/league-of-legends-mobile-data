@@ -1,4 +1,4 @@
-package com.example.leagueoflegendsapk.ui.dashboard
+package com.example.leagueoflegendsapk.ui.champions
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.leagueoflegendsapk.databinding.FragmentDashboardBinding
+import com.example.leagueoflegendsapk.databinding.FragmentChampionsBinding
 
-class DashboardFragment : Fragment() {
+class ChampionsFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentChampionsBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class DashboardFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
+        val championsViewModel =
+                ViewModelProvider(this).get(ChampionsViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentChampionsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
+        championsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

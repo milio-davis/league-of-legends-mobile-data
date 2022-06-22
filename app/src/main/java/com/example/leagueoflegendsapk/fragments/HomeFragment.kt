@@ -47,7 +47,6 @@ class HomeFragment : Fragment() {
     private val championsList = mutableListOf<Champion>()
     private lateinit var freeChampionIds: List<String>
 
-    private lateinit var laneTabsAdapter: LaneTabsAdapter
     private lateinit var viewPager: ViewPager2
 
     companion object {
@@ -89,14 +88,15 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Aatrox.png", ""))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Caitlyn.png", ""))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Rammus.png", ""))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Veigar.png", ""))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Zac.png", ""))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Xerath.png", ""))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Kayle.png", ""))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Xayah.png", ""))
+        // TODO: Set championsList from DB
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Aatrox.png", 0))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Caitlyn.png", 1))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Rammus.png", 2))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Veigar.png", 3))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Zac.png", 4))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Xerath.png", 5))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Kayle.png", 6))
+        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Xayah.png", 7))
 
         //Configuración Obligatoria
 

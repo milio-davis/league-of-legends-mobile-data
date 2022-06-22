@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">LeagueOfLegendsAPK</string>
-    <string name="title_index">Indice</string>
+    <string name="title_index">Inicio</string>
     <string name="title_champions">Campeones</string>
     <string name="title_configuration">Configuracion</string>
+    <string name="title_top">Top</string>
+    <string name="title_jungle">Jungle</string>
+    <string name="title_mid">Mid</string>
+    <string name="title_bot">Bot</string>
+    <string name="title_support">Support</string>
     <string name="text_login">Login</string>
-    <string name="hint_summonersName">Nombre de invocador</string>
+    <string name="hint_summonersName">Summoner\'s name</string>
 </resources>

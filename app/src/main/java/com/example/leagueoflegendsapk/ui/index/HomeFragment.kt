@@ -32,16 +32,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeFragment : Fragment() {
 
-    val apiKey = "RGAPI-f0abcc1c-6bbe-48db-b438-ebc17082fd41"
-    val summonerId = "6nwa1pkSeo2yUWI0gIFiD2wHVw21C71NQ2NyhnxN7B_XyZA"
+    private val apiKey = "RGAPI-f0abcc1c-6bbe-48db-b438-ebc17082fd41"
+    private val summonerId = "6nwa1pkSeo2yUWI0gIFiD2wHVw21C71NQ2NyhnxN7B_XyZA"
 
     private lateinit var sharedPref: SharedPreferences
     private lateinit var binding: FragmentIndexBinding
 
-    lateinit var recyclerRotacionSemanal : RecyclerView
+    private lateinit var recyclerRotacionSemanal : RecyclerView
     private lateinit var championRotationAdapter: ChampionRotationAdapter
 
-    lateinit var recyclerTopMasteryChampions : RecyclerView
+    private lateinit var recyclerTopMasteryChampions : RecyclerView
     private lateinit var topMasteryChampionsAdapter: TopMasteryChampionsAdapter
 
     private val championsList = mutableListOf<Champion>()
@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentIndexBinding.inflate(layoutInflater)
 
@@ -89,14 +89,15 @@ class HomeFragment : Fragment() {
         super.onStart()
 
         // TODO: Set championsList from DB
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Aatrox.png", 0))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Caitlyn.png", 1))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Rammus.png", 2))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Veigar.png", 3))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Zac.png", 4))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Xerath.png", 5))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Kayle.png", 6))
-        championsList.add(Champion("a", "https://ddragon.leagueoflegends.com/cdn/12.11.1/img/champion/Xayah.png", 7))
+        championsList.add(Champion("Aatrox",0, ""))
+        championsList.add(Champion("Lux",1, ""))
+        championsList.add(Champion("Ahri",2, ""))
+        championsList.add(Champion("Caitlyn",3, ""))
+        championsList.add(Champion("Zoe",4, ""))
+        championsList.add(Champion("Zilean",5, ""))
+        championsList.add(Champion("Warwick",6, ""))
+        championsList.add(Champion("Jayce",7, ""))
+        championsList.add(Champion("Wukong",7, ""))
 
         //Configuración Obligatoria
 
@@ -152,11 +153,9 @@ class HomeFragment : Fragment() {
 
     private fun launchCoroutines(){
         CoroutineScope(Dispatchers.IO).launch {
-            val call1 = async { getFreeChampionIds() }
-            //val call2 = async { getChampions() }
+            async { getFreeChampionIds() }
+            async { getChampions() }
             //val call3 = async { getTopMasteryChampions() }
-
-            Log.d("RETRO TEST", "1")
         }
     }
 
@@ -177,7 +176,17 @@ class HomeFragment : Fragment() {
         val champions = call.body()
         requireActivity().runOnUiThread {
             if (call.isSuccessful) {
-                Log.d("RETRO TEST", champions.toString())
+                @Suppress("UNCHECKED_CAST")
+                val c = champions?.championsObj as? Map<Any, Champion>
+
+                Log.d("RETRO TEST123", c.toString())
+                /*
+                c!!.forEach { entry ->
+                    Log.d("RETRO TEST","${entry.key} : ${entry.value}")
+                }
+
+                 */
+                Log.d("RETRO TEST", c!!["Ahri"].toString())
             } else {
                 Log.d("Error Retrofit", "Champions error")
             }

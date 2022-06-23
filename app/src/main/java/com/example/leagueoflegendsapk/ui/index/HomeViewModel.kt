@@ -1,4 +1,4 @@
-package com.example.leagueoflegendsapk.viewmodels
+package com.example.leagueoflegendsapk.ui.index
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

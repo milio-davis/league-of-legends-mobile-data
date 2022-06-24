@@ -89,15 +89,15 @@ class HomeFragment : Fragment() {
         super.onStart()
 
         // TODO: Set championsList from DB
-        championsList.add(Champion("Aatrox",0, ""))
-        championsList.add(Champion("Lux",1, ""))
-        championsList.add(Champion("Ahri",2, ""))
-        championsList.add(Champion("Caitlyn",3, ""))
-        championsList.add(Champion("Zoe",4, ""))
-        championsList.add(Champion("Zilean",5, ""))
-        championsList.add(Champion("Warwick",6, ""))
-        championsList.add(Champion("Jayce",7, ""))
-        championsList.add(Champion("Wukong",7, ""))
+        championsList.add(Champion("Aatrox","Aatrox",0, ""))
+        championsList.add(Champion("Lux","Lux",1, ""))
+        championsList.add(Champion("Ahri","Ahri",2, ""))
+        championsList.add(Champion("Caitlyn","Caitlyn",3, ""))
+        championsList.add(Champion("Zoe","Zoe",4, ""))
+        championsList.add(Champion("Zilean","Zilean",5, ""))
+        championsList.add(Champion("Warwick","Warwick",6, ""))
+        championsList.add(Champion("Jayce","Jayce",7, ""))
+        championsList.add(Champion("Wukong","MonkeyKing",7, ""))
 
         //Configuración Obligatoria
 

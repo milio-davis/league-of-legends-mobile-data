@@ -8,7 +8,7 @@ interface ChampionDAO {
     @Query("SELECT * FROM champions ORDER BY name ASC")
     fun getAll() : List<DBChampionEntity>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertChampion(champion: DBChampionEntity?)
 
     @Update

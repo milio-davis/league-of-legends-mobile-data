@@ -3,7 +3,6 @@ package com.example.leagueoflegendsapk.ui.index
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,19 +15,12 @@ import com.example.leagueoflegendsapk.R
 import com.example.leagueoflegendsapk.adapters.ChampionRotationAdapter
 import com.example.leagueoflegendsapk.adapters.LaneTabsAdapter
 import com.example.leagueoflegendsapk.adapters.TopMasteryChampionsAdapter
-import com.example.leagueoflegendsapk.entities.Champion
 import com.google.android.material.snackbar.Snackbar
-import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
+import com.example.leagueoflegendsapk.database.ChampionDAO
+import com.example.leagueoflegendsapk.database.DB
+import com.example.leagueoflegendsapk.database.DBChampionEntity
 import com.example.leagueoflegendsapk.databinding.FragmentIndexBinding
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class HomeFragment : Fragment() {
 
@@ -41,7 +33,9 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerTopMasteryChampions : RecyclerView
     private lateinit var topMasteryChampionsAdapter: TopMasteryChampionsAdapter
 
-    private val championsList = mutableListOf<Champion>()
+    private lateinit var db: DB
+    private lateinit var championDAO: ChampionDAO
+    private lateinit var championsList: List<DBChampionEntity>
 
     private lateinit var viewPager: ViewPager2
 
@@ -55,6 +49,10 @@ class HomeFragment : Fragment() {
     ): View {
 
         binding = FragmentIndexBinding.inflate(layoutInflater)
+
+        db = DB.getAppDataBase(requireContext())!!
+        championDAO = db?.getChampionDAO()
+        championsList = championDAO?.getAll()
 
         recyclerRotacionSemanal = binding.recyclerRotacionSemanal
         recyclerTopMasteryChampions = binding.recyclerTopMasteryChampions

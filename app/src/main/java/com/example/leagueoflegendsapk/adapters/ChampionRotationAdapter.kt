@@ -7,17 +7,18 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leagueoflegendsapk.R
+import com.example.leagueoflegendsapk.database.DBChampionEntity
 import com.example.leagueoflegendsapk.databinding.ItemChampionRotationBinding
 import com.example.leagueoflegendsapk.entities.Champion
 import com.squareup.picasso.Picasso
 
 class ChampionRotationAdapter(
-    private var championsList: MutableList<Champion>,
+    private var championsList: List<DBChampionEntity>?,
     val onItemClick: (Int) -> Boolean
 ) : RecyclerView.Adapter<ChampionRotationAdapter.ChampionHolder>() {
 
     override fun getItemCount(): Int {
-        return championsList.size
+        return championsList!!.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChampionHolder {
@@ -27,16 +28,11 @@ class ChampionRotationAdapter(
 
     override fun onBindViewHolder(holder: ChampionHolder, position: Int) {
 
-        holder.setImage(championsList[position].imageUrl)
+        holder.setImage(championsList!![position].imageUrl)
 
         holder.getCardLayout().setOnClickListener{
             onItemClick(position)
         }
-    }
-
-    fun setData(newData: ArrayList<Champion>) {
-        this.championsList = newData
-        this.notifyDataSetChanged()
     }
 
     class ChampionHolder (v: View) : RecyclerView.ViewHolder(v) {

@@ -20,7 +20,7 @@ abstract class DB : RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         DB::class.java,
-                        "myDB"
+                        "LOLAPKDB"
                     ).allowMainThreadQueries().build() // No es lo mas recomendable que se ejecute en el mainthread
                 }
             }

@@ -38,7 +38,7 @@ class RetrofitManager {
             .build()
     }
 
-    private suspend fun getTopMasteryChampions(activity: Activity) {
+    suspend fun getTopMasteryChampions(activity: Activity) {
         val call = getRetrofitRiot().create(RiotAPI::class.java).getTopMasteryChampions("champion-mastery/v4/champion-masteries/by-summoner/$summonerId?api_key=$apiKey")
         val champions = call.body()
         activity.runOnUiThread {
@@ -50,21 +50,25 @@ class RetrofitManager {
         }
     }
 
-    suspend fun getChampions(activity: Activity, callBack: (Map<Any, Champion>) -> Unit) {
+    suspend fun getChampions(activity: Activity, callBack: (List<Champion>) -> Unit) {
         val call = getRetrofitDdragon().create(RiotAPI::class.java).getChampions("champion.json")
-        val champions = call.body()
+        val data = call.body()
         activity.runOnUiThread {
             if (call.isSuccessful) {
-                @Suppress("UNCHECKED_CAST")
-                val c = champions?.championsObj as? Map<Any, Champion>
-                if (c != null) callBack(c)
+                val champions = data?.championsObj ?: return@runOnUiThread
+                val championsList = mutableListOf<Champion>()
+                champions.forEach {
+                    championsList.add(
+                        Champion(it.value.id, it.value.name, it.value.internalName, it.value.title))
+                }
+                callBack(championsList.toList())
             } else {
                 Log.d("Error Retrofit", "Champions error")
             }
         }
     }
 
-    private suspend fun getFreeChampionIds(activity: Activity, callBack: (List<String>) -> Unit) {
+    suspend fun getFreeChampionIds(activity: Activity, callBack: (List<String>) -> Unit) {
         val call = getRetrofitRiot().create(RiotAPI::class.java).getWeeklyChampionRotation("platform/v3/champion-rotations?api_key=$apiKey")
         val callChampList = call.body()
         activity.runOnUiThread {

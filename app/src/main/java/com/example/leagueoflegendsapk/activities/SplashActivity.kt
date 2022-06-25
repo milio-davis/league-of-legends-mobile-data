@@ -12,6 +12,7 @@ import com.example.leagueoflegendsapk.api.RetrofitManager
 import com.example.leagueoflegendsapk.database.ChampionDAO
 import com.example.leagueoflegendsapk.database.DB
 import com.example.leagueoflegendsapk.database.DBChampionEntity
+import com.example.leagueoflegendsapk.entities.Champion
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -29,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
         db = DB.getAppDataBase(applicationContext)
         championDAO = db?.getChampionDAO()
 
-        fetchChampionsToDB(this)
+        fetchChampionsRequest(this)
         advanceActivityByTimeout(3000)
     }
 
@@ -46,17 +47,17 @@ class SplashActivity : AppCompatActivity() {
         }, splashTimeout)
     }
 
-    private fun fetchChampionsToDB(activity: Activity) {
-        val a = RetrofitManager()
+    private fun fetchChampionsRequest(activity: Activity) {
+        val retrofitManager = RetrofitManager()
         CoroutineScope(Dispatchers.IO).launch {
-            async { a.getChampions(activity) { x -> Log.d("RETRO TEST SPLASH", x.toString())} }
+            async { retrofitManager.getChampions(activity) { champions -> setChampionsInDB(champions)} }
         }
+    }
 
-        championDAO?.insertChampion(DBChampionEntity(1, "asiufh", "ajks","asd"))
-        Log.d("DBTEST", championDAO!!.loadChampionById(1).toString())
-        val champions = championDAO?.getAll() as List<DBChampionEntity>
-        for ( champion in champions){
-            Log.d("DBTEST", champion.name)
+    private fun setChampionsInDB(champions: List<Champion>) {
+        champions.forEach {
+            championDAO?.insertChampion(DBChampionEntity(it.id, it.name,
+                it.internalName, it.title, it.imageUrl))
         }
     }
 

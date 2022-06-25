@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitManager {
 
-    private val apiKey = "RGAPI-f0abcc1c-6bbe-48db-b438-ebc17082fd41"
+    private val apiKey = "RGAPI-3e0f4d80-ee60-43d2-a891-c4aa90335c3f"
     private val summonerId = "6nwa1pkSeo2yUWI0gIFiD2wHVw21C71NQ2NyhnxN7B_XyZA"
 
     private fun getRetrofitRiot(): Retrofit {

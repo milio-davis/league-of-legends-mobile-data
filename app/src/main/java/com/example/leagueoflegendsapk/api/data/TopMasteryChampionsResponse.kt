@@ -5,5 +5,4 @@ import com.google.gson.annotations.SerializedName
 
 data class TopMasteryChampionsResponse(
     @field:SerializedName("data") val championsList: List<Champion>
-    // {data: {Aatrox: {id, name}, Ahri: {...} }
 )

@@ -1,8 +1,11 @@
 package com.example.leagueoflegendsapk.ui.index
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,29 +18,37 @@ import com.example.leagueoflegendsapk.R
 import com.example.leagueoflegendsapk.adapters.ChampionRotationAdapter
 import com.example.leagueoflegendsapk.adapters.LaneTabsAdapter
 import com.example.leagueoflegendsapk.adapters.TopMasteryChampionsAdapter
+import com.example.leagueoflegendsapk.api.RetrofitManager
 import com.google.android.material.snackbar.Snackbar
 import com.example.leagueoflegendsapk.database.ChampionDAO
 import com.example.leagueoflegendsapk.database.DB
 import com.example.leagueoflegendsapk.database.DBChampionEntity
 import com.example.leagueoflegendsapk.databinding.FragmentIndexBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
     private lateinit var sharedPref: SharedPreferences
     private lateinit var binding: FragmentIndexBinding
 
-    private lateinit var recyclerRotacionSemanal : RecyclerView
+    private lateinit var recyclerWeeklyRotation : RecyclerView
     private lateinit var championRotationAdapter: ChampionRotationAdapter
 
     private lateinit var recyclerTopMasteryChampions : RecyclerView
     private lateinit var topMasteryChampionsAdapter: TopMasteryChampionsAdapter
 
+    private lateinit var viewPager: ViewPager2
+
     private lateinit var db: DB
     private lateinit var championDAO: ChampionDAO
-    private lateinit var championsList: List<DBChampionEntity>
 
-    private lateinit var viewPager: ViewPager2
+    private val retrofitManager = RetrofitManager()
+
+    private var weeklyRotationChampionsList = mutableListOf<DBChampionEntity>()
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -51,10 +62,12 @@ class HomeFragment : Fragment() {
         binding = FragmentIndexBinding.inflate(layoutInflater)
 
         db = DB.getAppDataBase(requireContext())!!
-        championDAO = db?.getChampionDAO()
-        championsList = championDAO?.getAll()
+        championDAO = db.getChampionDAO()
 
-        recyclerRotacionSemanal = binding.recyclerRotacionSemanal
+        fetchWeeklyChampionRotation(requireActivity())
+        //fetchBestChampions(requireActivity())
+
+        recyclerWeeklyRotation = binding.recyclerRotacionSemanal
         recyclerTopMasteryChampions = binding.recyclerTopMasteryChampions
 
         sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
@@ -65,28 +78,38 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private fun fetchWeeklyChampionRotation(activity: Activity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            async { retrofitManager.getFreeChampionIds(activity) { freeChampionsIds ->
+                freeChampionsIds.forEach {
+                    weeklyRotationChampionsList.add(championDAO.loadChampionById(it.toInt())!!)
+                }
+                championRotationAdapter.notifyDataSetChanged()
+            } }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
 
         //Configuración Obligatoria
 
         // Recycler rotacion semanal
-        recyclerRotacionSemanal.setHasFixedSize(true)
-        recyclerRotacionSemanal.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        championRotationAdapter = ChampionRotationAdapter(championsList) { x ->
+        recyclerWeeklyRotation.setHasFixedSize(true)
+        recyclerWeeklyRotation.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+        championRotationAdapter = ChampionRotationAdapter(weeklyRotationChampionsList) { x ->
             onItemClick(x)
         }
-        recyclerRotacionSemanal.adapter = championRotationAdapter
+        recyclerWeeklyRotation.adapter = championRotationAdapter
 
         // Recycler top champions
         recyclerTopMasteryChampions.setHasFixedSize(true)
         recyclerTopMasteryChampions.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        topMasteryChampionsAdapter = TopMasteryChampionsAdapter(championsList) { x ->
+        topMasteryChampionsAdapter = TopMasteryChampionsAdapter(weeklyRotationChampionsList) { x ->
             onItemClick(x)
         }
         recyclerTopMasteryChampions.adapter = topMasteryChampionsAdapter
-
-        //championRotationAdapter.notifyDataSetChanged()
     }
 
     private fun onItemClick (position : Int ) : Boolean{

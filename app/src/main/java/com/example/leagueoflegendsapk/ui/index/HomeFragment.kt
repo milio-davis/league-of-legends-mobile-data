@@ -49,6 +49,7 @@ class HomeFragment : Fragment() {
     private val retrofitManager = RetrofitManager()
 
     private var weeklyRotationChampionsList = mutableListOf<DBChampionEntity>()
+    private var topMasteryChampionsList = mutableListOf<DBChampionEntity>()
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -64,9 +65,6 @@ class HomeFragment : Fragment() {
         db = DB.getAppDataBase(requireContext())!!
         championDAO = db.getChampionDAO()
 
-        fetchWeeklyChampionRotation(requireActivity())
-        //fetchBestChampions(requireActivity())
-
         recyclerWeeklyRotation = binding.recyclerRotacionSemanal
         recyclerTopMasteryChampions = binding.recyclerTopMasteryChampions
 
@@ -76,6 +74,22 @@ class HomeFragment : Fragment() {
         setLanesViewpager()
 
         return binding.root
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun fetchBestChampions() {
+        CoroutineScope(Dispatchers.IO).launch {
+            async { retrofitManager.getTop5MasteryChampions { champions ->
+                champions.forEach {
+                    Log.d("TEST", championDAO.loadChampionById(it.id)!!.toString())
+                    topMasteryChampionsList.add(championDAO.loadChampionById(it.id)!!)
+                    }
+                topMasteryChampionsAdapter.notifyDataSetChanged()
+                }
+
+            }
+        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -106,10 +120,13 @@ class HomeFragment : Fragment() {
         // Recycler top champions
         recyclerTopMasteryChampions.setHasFixedSize(true)
         recyclerTopMasteryChampions.layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        topMasteryChampionsAdapter = TopMasteryChampionsAdapter(weeklyRotationChampionsList) { x ->
+        topMasteryChampionsAdapter = TopMasteryChampionsAdapter(topMasteryChampionsList) { x ->
             onItemClick(x)
         }
         recyclerTopMasteryChampions.adapter = topMasteryChampionsAdapter
+
+        fetchWeeklyChampionRotation(requireActivity())
+        fetchBestChampions()
     }
 
     private fun onItemClick (position : Int ) : Boolean{

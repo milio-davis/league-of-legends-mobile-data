@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
 import com.example.leagueoflegendsapk.entities.Champion
+import com.example.leagueoflegendsapk.entities.ChampionMastery
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitManager {
 
-    private val apiKey = "RGAPI-3e0f4d80-ee60-43d2-a891-c4aa90335c3f"
+    private val apiKey = "RGAPI-608816ad-6fcf-4874-a3c8-4bae7590703a"
     private val summonerId = "6nwa1pkSeo2yUWI0gIFiD2wHVw21C71NQ2NyhnxN7B_XyZA"
 
     private fun getRetrofitRiot(): Retrofit {
@@ -38,16 +39,10 @@ class RetrofitManager {
             .build()
     }
 
-    suspend fun getTopMasteryChampions(activity: Activity) {
+    fun getTop5MasteryChampions(callBack: (List<ChampionMastery>) -> Unit) {
         val call = getRetrofitRiot().create(RiotAPI::class.java).getTopMasteryChampions("champion-mastery/v4/champion-masteries/by-summoner/$summonerId?api_key=$apiKey")
-        val champions = call.body()
-        activity.runOnUiThread {
-            if (call.isSuccessful) {
-                Log.d("RETRO TEST", champions.toString())
-            } else {
-                Log.d("Error Retrofit", "Champions error")
-            }
-        }
+        val response = call!!.execute().body() ?: return
+        callBack(response.toList().subList(0,5) as List<ChampionMastery>)
     }
 
     suspend fun getChampions(activity: Activity, callBack: (List<Champion>) -> Unit) {

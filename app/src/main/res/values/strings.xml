@@ -10,4 +10,5 @@
     <string name="title_support">Support</string>
     <string name="text_login">Login</string>
     <string name="hint_summonersName">Summoner\'s name</string>
+    <string name="hint_championFilter">Champion Search</string>
 </resources>

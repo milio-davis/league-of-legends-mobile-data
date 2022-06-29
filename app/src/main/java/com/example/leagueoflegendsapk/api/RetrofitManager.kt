@@ -12,9 +12,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitManager {
 
-    private val apiKey = "RGAPI-608816ad-6fcf-4874-a3c8-4bae7590703a"
+    private val apiKey = "RGAPI-d1044bf1-d221-451f-934c-4064157ae84f"
     private val summonerId = "6nwa1pkSeo2yUWI0gIFiD2wHVw21C71NQ2NyhnxN7B_XyZA"
 
+    /**
+     * Build Retrofit Call for Riot Games API with BaseURL
+     * (Data: Summoners, Champion rotation, Masteries)
+     */
     private fun getRetrofitRiot(): Retrofit {
         val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
         val client = OkHttpClient.Builder()
@@ -27,6 +31,10 @@ class RetrofitManager {
             .build()
     }
 
+    /**
+     * Build Retrofit Call for Data Dragon API with BaseURL
+     * (Data: Champions DB)
+     */
     private fun getRetrofitDdragon(): Retrofit {
         val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
         val client = OkHttpClient.Builder()
@@ -39,14 +47,24 @@ class RetrofitManager {
             .build()
     }
 
-    fun getTop5MasteryChampions(callBack: (List<ChampionMastery>) -> Unit) {
-        val call = getRetrofitRiot().create(RiotAPI::class.java).getTopMasteryChampions("champion-mastery/v4/champion-masteries/by-summoner/$summonerId?api_key=$apiKey")
-        val response = call!!.execute().body() ?: return
-        callBack(response.toList().subList(0,5) as List<ChampionMastery>)
+    /**
+     * Get the top 5 champions of summoner ID in descendant mastery order.
+     */
+    fun getTop5MasteryChampions(activity: Activity, callBack: (List<ChampionMastery>) -> Unit) {
+        val call = getRetrofitRiot().create(RiotAPI::class.java)
+            .getTopMasteryChampions("champion-mastery/v4/champion-masteries/by-summoner/$summonerId?api_key=$apiKey")
+        activity.runOnUiThread {
+            val response = call!!.execute().body() ?: return@runOnUiThread
+            callBack(response.toList().subList(0,5) as List<ChampionMastery>)
+        }
     }
 
+    /**
+     * Get all champions from Data Dragon DB.
+     */
     suspend fun getChampions(activity: Activity, callBack: (List<Champion>) -> Unit) {
-        val call = getRetrofitDdragon().create(RiotAPI::class.java).getChampions("champion.json")
+        val call = getRetrofitDdragon().create(RiotAPI::class.java)
+            .getChampions("champion.json")
         val data = call.body()
         activity.runOnUiThread {
             if (call.isSuccessful) {
@@ -63,8 +81,12 @@ class RetrofitManager {
         }
     }
 
+    /**
+     * Get the weekly free champions rotation.
+     */
     suspend fun getFreeChampionIds(activity: Activity, callBack: (List<String>) -> Unit) {
-        val call = getRetrofitRiot().create(RiotAPI::class.java).getWeeklyChampionRotation("platform/v3/champion-rotations?api_key=$apiKey")
+        val call = getRetrofitRiot().create(RiotAPI::class.java)
+            .getWeeklyChampionRotation("platform/v3/champion-rotations?api_key=$apiKey")
         val callChampList = call.body()
         activity.runOnUiThread {
             if (call.isSuccessful) {

@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,16 +22,17 @@ import com.example.leagueoflegendsapk.adapters.ChampionRotationAdapter
 import com.example.leagueoflegendsapk.adapters.LaneTabsAdapter
 import com.example.leagueoflegendsapk.adapters.TopMasteryChampionsAdapter
 import com.example.leagueoflegendsapk.api.RetrofitManager
-import com.google.android.material.snackbar.Snackbar
 import com.example.leagueoflegendsapk.database.ChampionDAO
 import com.example.leagueoflegendsapk.database.DB
 import com.example.leagueoflegendsapk.database.DBChampionEntity
 import com.example.leagueoflegendsapk.databinding.FragmentIndexBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+
 
 class HomeFragment : Fragment() {
 
@@ -73,35 +77,10 @@ class HomeFragment : Fragment() {
 
         setLanesViewpager()
 
+        fetchWeeklyChampionRotation(requireActivity())
+        fetchBestChampions(requireActivity())
+
         return binding.root
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun fetchBestChampions() {
-        CoroutineScope(Dispatchers.IO).launch {
-            async { retrofitManager.getTop5MasteryChampions { champions ->
-                champions.forEach {
-                    Log.d("TEST", championDAO.loadChampionById(it.id)!!.toString())
-                    topMasteryChampionsList.add(championDAO.loadChampionById(it.id)!!)
-                    }
-                topMasteryChampionsAdapter.notifyDataSetChanged()
-                }
-
-            }
-        }
-
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun fetchWeeklyChampionRotation(activity: Activity) {
-        CoroutineScope(Dispatchers.IO).launch {
-            async { retrofitManager.getFreeChampionIds(activity) { freeChampionsIds ->
-                freeChampionsIds.forEach {
-                    weeklyRotationChampionsList.add(championDAO.loadChampionById(it.toInt())!!)
-                }
-                championRotationAdapter.notifyDataSetChanged()
-            } }
-        }
     }
 
     override fun onStart() {
@@ -124,14 +103,38 @@ class HomeFragment : Fragment() {
             onItemClick(x)
         }
         recyclerTopMasteryChampions.adapter = topMasteryChampionsAdapter
-
-        fetchWeeklyChampionRotation(requireActivity())
-        fetchBestChampions()
     }
 
     private fun onItemClick (position : Int ) : Boolean{
         Snackbar.make(binding.root,position.toString(),Snackbar.LENGTH_SHORT).show()
         return true
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun fetchBestChampions(activity: Activity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            async { retrofitManager.getTop5MasteryChampions(activity) { champions ->
+                champions.forEach {
+                    topMasteryChampionsList.add(championDAO.loadChampionById(it.id)!!)
+                }
+                topMasteryChampionsAdapter.notifyDataSetChanged()
+            }
+            }
+        }
+
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun fetchWeeklyChampionRotation(activity: Activity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            async { retrofitManager.getFreeChampionIds(activity) { freeChampionsIds ->
+                freeChampionsIds.forEach {
+                    weeklyRotationChampionsList.add(championDAO.loadChampionById(it.toInt())!!)
+                }
+                championRotationAdapter.notifyDataSetChanged()
+            }
+            }
+        }
     }
 
     private fun setLanesViewpager() {
@@ -145,9 +148,6 @@ class HomeFragment : Fragment() {
                 2 -> tab.text = resources.getString(R.string.title_mid)
                 3 -> tab.text = resources.getString(R.string.title_bot)
                 4 -> tab.text = resources.getString(R.string.title_support)
-                else -> { // Note the block
-                    print("")
-                }
             }
         }.attach()
     }

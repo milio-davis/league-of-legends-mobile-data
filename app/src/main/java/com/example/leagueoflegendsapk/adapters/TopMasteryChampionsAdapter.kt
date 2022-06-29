@@ -3,13 +3,11 @@ package com.example.leagueoflegendsapk.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leagueoflegendsapk.R
 import com.example.leagueoflegendsapk.database.DBChampionEntity
 import com.example.leagueoflegendsapk.databinding.ItemChampionRotationBinding
-import com.example.leagueoflegendsapk.entities.Champion
 import com.squareup.picasso.Picasso
 
 class TopMasteryChampionsAdapter(
@@ -30,6 +28,8 @@ class TopMasteryChampionsAdapter(
 
         holder.setImage(championsList[position].imageUrl)
 
+        holder.setChampionName(championsList!![position].name)
+
         holder.getCardLayout().setOnClickListener{
             onItemClick(position)
         }
@@ -40,7 +40,11 @@ class TopMasteryChampionsAdapter(
         private val binding = ItemChampionRotationBinding.bind(v)
 
         fun setImage(path: String) {
-            Picasso.get().load(path).into(binding.imageView)
+            Picasso.get().load(path).into(binding.imgItemChampion)
+        }
+
+        fun setChampionName(name: String) {
+            binding.txtItemChampionName.text = name
         }
 
         fun getCardLayout (): CardView {

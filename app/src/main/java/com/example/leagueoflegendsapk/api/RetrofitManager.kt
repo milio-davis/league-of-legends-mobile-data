@@ -12,8 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitManager {
 
-    private val apiKey = "RGAPI-d1044bf1-d221-451f-934c-4064157ae84f"
-    private val summonerId = "6nwa1pkSeo2yUWI0gIFiD2wHVw21C71NQ2NyhnxN7B_XyZA"
+    private val apiKey = "RGAPI-942086ac-bb0a-4dca-bd90-867f7148bc76"
 
     /**
      * Build Retrofit Call for Riot Games API with BaseURL
@@ -48,18 +47,6 @@ class RetrofitManager {
     }
 
     /**
-     * Get the top 5 champions of summoner ID in descendant mastery order.
-     */
-    fun getTop5MasteryChampions(activity: Activity, callBack: (List<ChampionMastery>) -> Unit) {
-        val call = getRetrofitRiot().create(RiotAPI::class.java)
-            .getTopMasteryChampions("champion-mastery/v4/champion-masteries/by-summoner/$summonerId?api_key=$apiKey")
-        activity.runOnUiThread {
-            val response = call!!.execute().body() ?: return@runOnUiThread
-            callBack(response.toList().subList(0,5) as List<ChampionMastery>)
-        }
-    }
-
-    /**
      * Get all champions from Data Dragon DB.
      */
     suspend fun getChampions(activity: Activity, callBack: (List<Champion>) -> Unit) {
@@ -82,6 +69,18 @@ class RetrofitManager {
     }
 
     /**
+     * Get the top 5 champions of summoner ID in descendant mastery order.
+     */
+    fun getTop5MasteryChampions(activity: Activity, summonerId: String, callBack: (List<ChampionMastery>) -> Unit) {
+        val call = getRetrofitRiot().create(RiotAPI::class.java)
+            .getTopMasteryChampions("champion-mastery/v4/champion-masteries/by-summoner/$summonerId?api_key=$apiKey")
+        activity.runOnUiThread {
+            val response = call!!.execute().body() ?: return@runOnUiThread
+            callBack(response.toList().subList(0,10) as List<ChampionMastery>)
+        }
+    }
+
+    /**
      * Get the weekly free champions rotation.
      */
     suspend fun getFreeChampionIds(activity: Activity, callBack: (List<String>) -> Unit) {
@@ -93,6 +92,23 @@ class RetrofitManager {
                 callBack(callChampList?.freeChampionIds ?: emptyList())
             } else {
                 Log.d("Error Retrofit", "Free Champion Rotation error")
+            }
+        }
+    }
+
+    /**
+     * Get the weekly free champions rotation.
+     */
+    suspend fun getSummonerId(activity: Activity, summonerName: String, callBack: (String) -> Unit) {
+        val call = getRetrofitRiot().create(RiotAPI::class.java)
+            .getSummonerId("summoner/v4/summoners/by-name/$summonerName?api_key=$apiKey")
+        val response = call.body()
+        activity.runOnUiThread {
+            if (call.isSuccessful) {
+                callBack(response!!.summonerId)
+            } else {
+                Log.d("Error Retrofit", "Get summoner ID error")
+                callBack("")
             }
         }
     }

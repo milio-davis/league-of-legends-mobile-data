@@ -1,13 +1,18 @@
 package com.example.leagueoflegendsapk.ui.configuration
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.leagueoflegendsapk.activities.MainActivity
+import com.example.leagueoflegendsapk.activities.SplashActivity
 import com.example.leagueoflegendsapk.databinding.FragmentConfigurationBinding
+
 
 class ConfigurationFragment : Fragment() {
 
@@ -18,21 +23,37 @@ class ConfigurationFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         val configurationViewModel =
-                ViewModelProvider(this).get(ConfigurationViewModel::class.java)
+            ViewModelProvider(this).get(ConfigurationViewModel::class.java)
 
         _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
+        binding.btnLogoutConfig.setOnClickListener {
+            removeSharedPrefData()
+            startActivity(Intent(requireContext(), SplashActivity::class.java))
+            requireActivity().finish()
+        }
+
+        /*
         val textView: TextView = binding.textNotifications
         configurationViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
+
+         */
+        return binding.root
+    }
+
+    private fun removeSharedPrefData() {
+        val sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPref.edit()
+        editor.remove("summonersName")
+        editor.remove("summonerId")
+        editor.apply()
     }
 
     override fun onDestroyView() {

@@ -9,8 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.leagueoflegendsapk.activities.MainActivity
-import com.example.leagueoflegendsapk.activities.SplashActivity
+import com.example.leagueoflegendsapk.activities.FirstActivity
 import com.example.leagueoflegendsapk.databinding.FragmentConfigurationBinding
 
 
@@ -34,7 +33,7 @@ class ConfigurationFragment : Fragment() {
 
         binding.btnLogoutConfig.setOnClickListener {
             removeSharedPrefData()
-            startActivity(Intent(requireContext(), SplashActivity::class.java))
+            startActivity(Intent(requireContext(), FirstActivity::class.java))
             requireActivity().finish()
         }
 

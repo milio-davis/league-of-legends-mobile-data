@@ -5,7 +5,7 @@
     android:id="@+id/layoutSplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SplashActivity">
+    tools:context=".activities.FirstActivity">
 
     <TextView
         android:id="@+id/txtTitleSplash"
@@ -26,10 +26,12 @@
         android:id="@+id/imgSplash"
         android:layout_width="241dp"
         android:layout_height="327dp"
+        android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitleSplash"
         app:layout_constraintVertical_bias="0.655"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        tools:ignore="ImageContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

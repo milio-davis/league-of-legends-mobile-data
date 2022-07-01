@@ -4,14 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
-import android.os.StrictMode
-import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
@@ -37,6 +35,9 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     private lateinit var sharedPref: SharedPreferences
+    private lateinit var summonerName: String
+    private lateinit var summonerId: String
+
     private lateinit var binding: FragmentIndexBinding
 
     private lateinit var recyclerWeeklyRotation : RecyclerView
@@ -73,12 +74,15 @@ class HomeFragment : Fragment() {
         recyclerTopMasteryChampions = binding.recyclerTopMasteryChampions
 
         sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
-        binding.txtSummonersNameHome.text = sharedPref.getString("summonersName", "")
+        summonerName = sharedPref.getString("summonersName", "")!!
+
+        binding.txtSummonersNameHome.text = summonerName
+
+        requestSummonerIdAndBestChampions(requireActivity(), summonerName)
 
         setLanesViewpager()
 
         fetchWeeklyChampionRotation(requireActivity())
-        fetchBestChampions(requireActivity())
 
         return binding.root
     }
@@ -111,9 +115,27 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
+    private fun requestSummonerIdAndBestChampions(activity: Activity, summonerName: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            async { retrofitManager.getSummonerId(activity, summonerName) {
+                if (it == "") binding.txtSummonersNameHome.text = "Summoner Name no existe"
+                else {
+                    summonerId = it
+                    val editor = requireContext().getSharedPreferences("lolSharedPreferences",
+                        AppCompatActivity.MODE_PRIVATE).edit()
+                    editor.putString("summonerId", summonerId)
+                    editor.apply()
+                    fetchBestChampions(requireActivity())
+                }
+            }
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     private fun fetchBestChampions(activity: Activity) {
         CoroutineScope(Dispatchers.IO).launch {
-            async { retrofitManager.getTop5MasteryChampions(activity) { champions ->
+            async { retrofitManager.getTop5MasteryChampions(activity, summonerId) { champions ->
                 champions.forEach {
                     topMasteryChampionsList.add(championDAO.loadChampionById(it.id)!!)
                 }

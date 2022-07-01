@@ -19,9 +19,8 @@ class HomeLanesFragment : Fragment() {
         binding = FragmentHomeLanesBinding.inflate(layoutInflater)
 
         val a = requireArguments().getInt("position",-1)
-        binding.txtChamp.text = a.toString()
 
-        // TODO: Implement champions images for each lane
+        //binding.txtChamp.text = a.toString()
 
         return binding.root
     }

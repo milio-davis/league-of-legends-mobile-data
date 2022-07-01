@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.leagueoflegendsapk.activities.FirstActivity
@@ -21,6 +23,8 @@ class ConfigurationFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var sharedPref: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,6 +34,8 @@ class ConfigurationFragment : Fragment() {
             ViewModelProvider(this).get(ConfigurationViewModel::class.java)
 
         _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
+
+        sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
 
         binding.btnLogoutConfig.setOnClickListener {
             removeSharedPrefData()
@@ -42,16 +48,34 @@ class ConfigurationFragment : Fragment() {
         configurationViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+        */
 
-         */
+        if (sharedPref.getBoolean("nightMode", false)) {
+            binding.switchThemeConfig.isChecked = true
+        }
+
+        binding.switchThemeConfig.setOnCheckedChangeListener {
+                buttonView, isChecked ->
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                requireContext().getSharedPreferences("lolSharedPreferences", AppCompatActivity.MODE_PRIVATE)
+                    .edit().putBoolean("nightMode", true).apply()
+            }
+            else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                requireContext().getSharedPreferences("lolSharedPreferences", AppCompatActivity.MODE_PRIVATE)
+                    .edit().putBoolean("nightMode", false).apply()
+            }
+        }
+
         return binding.root
     }
 
     private fun removeSharedPrefData() {
-        val sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPref.edit()
         editor.remove("summonersName")
         editor.remove("summonerId")
+        editor.remove("nightMode")
         editor.apply()
     }
 

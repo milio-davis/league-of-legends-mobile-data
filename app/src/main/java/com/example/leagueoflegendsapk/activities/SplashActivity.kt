@@ -34,6 +34,9 @@ class SplashActivity : AppCompatActivity() {
         advanceActivityByTimeout(3000)
     }
 
+    /**
+     * Move APP  to MainActivity after timeout
+     */
     private fun advanceActivityByTimeout(splashTimeout: Long) {
         Handler().postDelayed({
             var sharedPref = getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)

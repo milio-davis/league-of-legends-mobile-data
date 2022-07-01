@@ -1,12 +1,11 @@
 package com.example.leagueoflegendsapk.api.interfaces
 
 import com.example.leagueoflegendsapk.api.data.ChampionsResponse
-import com.example.leagueoflegendsapk.api.data.TopMasteryChampionsResponse
 import com.example.leagueoflegendsapk.api.data.WeeklyChampionRotationResponse
+import com.example.leagueoflegendsapk.entities.ChampionMastery
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface RiotAPI {
@@ -17,5 +16,5 @@ interface RiotAPI {
     suspend fun getChampions(@Url url:String): Response<ChampionsResponse>
 
     @GET
-    suspend fun getTopMasteryChampions(@Url url:String): Response<TopMasteryChampionsResponse>
+    fun getTopMasteryChampions(@Url url:String): Call<List<ChampionMastery?>?>?
 }

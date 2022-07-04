@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
@@ -75,14 +74,15 @@ class HomeFragment : Fragment() {
 
         sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
         summonerName = sharedPref.getString("summonersName", "")!!
+        summonerId = sharedPref.getString("summonerId", "")!!
 
         binding.txtSummonersNameHome.text = summonerName
-
-        requestSummonerIdAndBestChampions(requireActivity(), summonerName)
 
         setLanesViewpager()
 
         fetchWeeklyChampionRotation(requireActivity())
+
+        fetchBestChampions(requireActivity(), summonerId)
 
         return binding.root
     }
@@ -115,22 +115,7 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun requestSummonerIdAndBestChampions(activity: Activity, summonerName: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            async { retrofitManager.getSummonerId(activity, summonerName) {
-                if (it == "") binding.txtSummonersNameHome.text = "Summoner Name no existe"
-                else {
-                    summonerId = it
-                    sharedPref.edit().putString("summonerId", summonerId).apply()
-                    fetchBestChampions(requireActivity())
-                }
-            }
-            }
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun fetchBestChampions(activity: Activity) {
+    private fun fetchBestChampions(activity: Activity, summonerId: String) {
         CoroutineScope(Dispatchers.IO).launch {
             async { retrofitManager.getTop5MasteryChampions(activity, summonerId) { champions ->
                 champions.forEach {
@@ -162,11 +147,8 @@ class HomeFragment : Fragment() {
         val tabLayout = binding.tabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = resources.getString(R.string.title_top)
-                1 -> tab.text = resources.getString(R.string.title_jungle)
-                2 -> tab.text = resources.getString(R.string.title_mid)
-                3 -> tab.text = resources.getString(R.string.title_bot)
-                4 -> tab.text = resources.getString(R.string.title_support)
+                0 -> tab.text = resources.getString(R.string.title_ranked_solo)
+                1 -> tab.text = resources.getString(R.string.title_ranked_flex)
             }
         }.attach()
     }

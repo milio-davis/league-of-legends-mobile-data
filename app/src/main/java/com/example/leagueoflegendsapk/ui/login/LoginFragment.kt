@@ -14,6 +14,8 @@ import com.example.leagueoflegendsapk.R
 
 class LoginFragment : Fragment() {
 
+    private lateinit var summonerName: String
+
     companion object {
         fun newInstance() = LoginFragment()
     }
@@ -28,7 +30,9 @@ class LoginFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
         view.findViewById<Button>(R.id.btnLogin).setOnClickListener {
-            setSummonersNameSharedPref(view.findViewById<TextView>(R.id.txtSummonersNameLogin).text.toString())
+            summonerName = view.findViewById<TextView>(R.id.txtSummonersNameLogin).text.toString()
+            setSummonersNameSharedPref(summonerName)
+            setSummonerIdSharedPref()
             findNavController().navigate(R.id.action_loginFragment_to_mainActivity)
         }
 
@@ -45,6 +49,18 @@ class LoginFragment : Fragment() {
         editor.putString("summonersName", summonersName)
         editor.putBoolean("nightMode", false)
         editor.apply()
+    }
+
+    private fun setSummonerIdSharedPref() {
+        CoroutineScope(Dispatchers.IO).launch {
+            async { RetrofitManager().getSummonerId(requireActivity(), summonerName) {
+                val editor = requireContext().getSharedPreferences("lolSharedPreferences",
+                    AppCompatActivity.MODE_PRIVATE).edit()
+                editor.putString("summonerId", it)
+                editor.apply()
+            }
+            }
+        }
     }
 
 }

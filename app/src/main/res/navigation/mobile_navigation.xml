@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.example.leagueoflegendsapk.ui.index.HomeFragment"
         android:label="@string/title_index"
-        tools:layout="@layout/fragment_index" />
+        tools:layout="@layout/fragment_index" >
+        <action
+            android:id="@+id/action_navigation_home_to_patchNotesFragment"
+            app:destination="@id/patchNotesFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +26,9 @@
         android:name="com.example.leagueoflegendsapk.ui.configuration.ConfigurationFragment"
         android:label="@string/title_configuration"
         tools:layout="@layout/fragment_configuration" />
+    <fragment
+        android:id="@+id/patchNotesFragment"
+        android:name="com.example.leagueoflegendsapk.ui.patch_notes.PatchNotesFragment"
+        android:label="fragment_patch_notes"
+        tools:layout="@layout/fragment_patch_notes" />
 </navigation>

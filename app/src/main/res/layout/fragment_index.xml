@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/layoutHomeRotacionSemanal"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:elevation="15dp"
         android:orientation="vertical"
@@ -22,6 +22,7 @@
             android:id="@+id/txtTituloRotacionSemanal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:text="@string/title_weeklyRotation"
             android:textSize="20sp" />
@@ -29,7 +30,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerRotacionSemanal"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btnVerMasRotacionSemanal"
@@ -43,8 +44,10 @@
     <LinearLayout
         android:id="@+id/layoutHomeLineas"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_margin="15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
         android:elevation="15dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +58,7 @@
             android:id="@+id/txtTitleRanked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:gravity="center_horizontal"
             android:text="@string/title_ranked"
             android:textSize="20sp" />
 
@@ -90,7 +93,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pagerHomeLanes"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
@@ -99,7 +102,7 @@
     <LinearLayout
         android:id="@+id/layoutHomeMisCampeones"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:elevation="15dp"
         android:orientation="vertical"
@@ -111,6 +114,7 @@
             android:id="@+id/txtTituloMejoresCampeones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:text="@string/title_bestChampions"
             android:textSize="20sp" />
@@ -118,14 +122,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTopMasteryChampions"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
-
-        <Button
-            android:id="@+id/btnVerMasRotacionSemanal2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/hint_seeMore" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -135,7 +132,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textSize="24sp"
+        android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"

@@ -78,7 +78,7 @@ class ConfigurationFragment : Fragment() {
     }
 
     private fun loadProfilePic(profilePicId: Int) {
-        val path = "https://ddragon.leagueoflegends.com/cdn/11.14.1/img/profileicon/${profilePicId}.png"
+        val path = "https://ddragon.leagueoflegends.com/cdn/12.12.1/img/profileicon/${profilePicId}.png"
         Picasso.get().load(path).into(binding.imgSummonerProfileConfig)
     }
 

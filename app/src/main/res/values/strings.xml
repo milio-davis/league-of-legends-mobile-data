@@ -3,18 +3,19 @@
     <string name="title_index">Inicio</string>
     <string name="title_champions">Campeones</string>
     <string name="title_configuration">Configuracion</string>
-    <string name="title_top">Top</string>
-    <string name="title_jungle">Jungle</string>
-    <string name="title_mid">Mid</string>
-    <string name="title_bot">Bot</string>
-    <string name="title_support">Support</string>
+    <string name="title_ranked_solo">Solo Queue</string>
+    <string name="title_ranked_flex">Flex Queue</string>
+    <string name="title_ranked">Ranking</string>
     <string name="text_login">Login</string>
     <string name="hint_summonersName">Summoner\'s name</string>
     <string name="title_bestChampions">Mis mejores campeones</string>
     <string name="title_weeklyRotation">Rotacion semanal</string>
     <string name="hint_seeMore">Ver mas</string>
     <string name="title_logout">Cerrar sesion</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_tier">Tier</string>
+    <string name="title_rank">Rank</string>
+    <string name="title_leaguePoints">League points</string>
+    <string name="title_wins">Victorias</string>
+    <string name="title_losses">Derrotas</string>
 
 </resources>

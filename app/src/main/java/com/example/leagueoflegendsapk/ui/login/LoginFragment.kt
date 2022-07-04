@@ -11,6 +11,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.example.leagueoflegendsapk.R
+import com.example.leagueoflegendsapk.api.RetrofitManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 
@@ -56,7 +61,9 @@ class LoginFragment : Fragment() {
             async { RetrofitManager().getSummonerId(requireActivity(), summonerName) {
                 val editor = requireContext().getSharedPreferences("lolSharedPreferences",
                     AppCompatActivity.MODE_PRIVATE).edit()
-                editor.putString("summonerId", it)
+                editor.putString("summonerId", it.summonerId)
+                editor.putInt("profileIconId", it.profileIconId)
+                editor.putInt("summonerLevel", it.summonerLevel)
                 editor.apply()
             }
             }

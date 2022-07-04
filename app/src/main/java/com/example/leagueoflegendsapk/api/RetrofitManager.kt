@@ -3,6 +3,7 @@ package com.example.leagueoflegendsapk.api
 import android.app.Activity
 import android.util.Log
 import com.example.leagueoflegendsapk.api.data.RankResponse
+import com.example.leagueoflegendsapk.api.data.SummonerDataResponse
 import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
 import com.example.leagueoflegendsapk.entities.Champion
 import com.example.leagueoflegendsapk.entities.ChampionMastery
@@ -98,17 +99,17 @@ class RetrofitManager {
     }
 
     /**
-     * Get the weekly free champions rotation.
+     * Get summoner ID from given summoner name
      */
-    suspend fun getSummonerId(activity: Activity, summonerName: String, callBack: (String) -> Unit) {
+    suspend fun getSummonerId(activity: Activity, summonerName: String, callBack: (SummonerDataResponse) -> Unit) {
         val call = getRetrofitRiot().create(RiotAPI::class.java)
             .getSummonerId("summoner/v4/summoners/by-name/$summonerName?api_key=$apiKey")
         val response = call.body()
         activity.runOnUiThread {
             if (call.isSuccessful) {
-                callBack(response!!.summonerId)
+                callBack(response!!)
             } else {
-                Log.d("Error Retrofit", "Get summoner ID error")
+                Log.d("Error Retrofit", "Get summoner profile picture ID error")
             }
         }
     }

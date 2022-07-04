@@ -19,5 +19,6 @@
     <string name="title_wins">Victorias</string>
     <string name="title_losses">Derrotas</string>
     <string name="title_switchNightMode">Modo oscuro</string>
+    <string name="title_level">Nivel</string>
 
 </resources>

@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.leagueoflegendsapk.R
 import com.example.leagueoflegendsapk.activities.FirstActivity
 import com.example.leagueoflegendsapk.databinding.FragmentConfigurationBinding
+import com.squareup.picasso.Picasso
 
 
 class ConfigurationFragment : Fragment() {
@@ -50,7 +52,11 @@ class ConfigurationFragment : Fragment() {
             requireActivity().finish()
         }
 
-        binding.txtSummonerNameConfig.text = sharedPref.getString("summonersName", "")!!
+        binding.txtSummonerNameConfig.text =
+           "${sharedPref.getString("summonersName", "")!!}"
+        binding.txtSummonerLevelConfig.text =
+            "${resources.getString(R.string.title_level)}: ${sharedPref.getInt("summonerLevel", 1)}"
+        loadProfilePic(sharedPref.getInt("profileIconId", 1))
 
         if (sharedPref.getBoolean("nightMode", false)) {
             binding.switchThemeConfig.isChecked = true
@@ -69,6 +75,11 @@ class ConfigurationFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun loadProfilePic(profilePicId: Int) {
+        val path = "https://ddragon.leagueoflegends.com/cdn/11.14.1/img/profileicon/${profilePicId}.png"
+        Picasso.get().load(path).into(binding.imgSummonerProfileConfig)
     }
 
     private fun removeSharedPrefData() {

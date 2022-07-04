@@ -2,6 +2,7 @@ package com.example.leagueoflegendsapk.api
 
 import android.app.Activity
 import android.util.Log
+import com.example.leagueoflegendsapk.api.data.RankResponse
 import com.example.leagueoflegendsapk.api.interfaces.RiotAPI
 import com.example.leagueoflegendsapk.entities.Champion
 import com.example.leagueoflegendsapk.entities.ChampionMastery
@@ -12,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitManager {
 
-    private val apiKey = "RGAPI-942086ac-bb0a-4dca-bd90-867f7148bc76"
+    private val apiKey = "RGAPI-2faea3cc-eb3e-4390-bb93-493686afec35"
 
     /**
      * Build Retrofit Call for Riot Games API with BaseURL
@@ -76,7 +77,7 @@ class RetrofitManager {
             .getTopMasteryChampions("champion-mastery/v4/champion-masteries/by-summoner/$summonerId?api_key=$apiKey")
         activity.runOnUiThread {
             val response = call!!.execute().body() ?: return@runOnUiThread
-            callBack(response.toList().subList(0,10) as List<ChampionMastery>)
+            callBack(response.toList() as List<ChampionMastery>)
         }
     }
 
@@ -108,8 +109,19 @@ class RetrofitManager {
                 callBack(response!!.summonerId)
             } else {
                 Log.d("Error Retrofit", "Get summoner ID error")
-                callBack("")
             }
+        }
+    }
+
+    /**
+     * Get the top 5 champions of summoner ID in descendant mastery order.
+     */
+    fun getRanks(activity: Activity, summonerId: String, callBack: (List<RankResponse?>) -> Unit) {
+        val call = getRetrofitRiot().create(RiotAPI::class.java)
+            .getRank("league/v4/entries/by-summoner/$summonerId?api_key=$apiKey")
+        activity.runOnUiThread {
+            val response = call!!.execute().body() ?: return@runOnUiThread
+            callBack(response)
         }
     }
 

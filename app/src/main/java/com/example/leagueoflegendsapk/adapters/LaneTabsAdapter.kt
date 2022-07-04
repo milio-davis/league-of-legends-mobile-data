@@ -7,7 +7,7 @@ import com.example.leagueoflegendsapk.ui.index.HomeLanesFragment
 
 class LaneTabsAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = 5
+    override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
 

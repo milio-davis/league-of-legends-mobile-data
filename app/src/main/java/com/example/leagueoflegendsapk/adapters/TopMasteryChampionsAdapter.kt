@@ -16,7 +16,8 @@ class TopMasteryChampionsAdapter(
 ) : RecyclerView.Adapter<TopMasteryChampionsAdapter.ChampionHolder>() {
 
     override fun getItemCount(): Int {
-        return championsList.size
+        val max = 10
+        return if (championsList.size > max) max else championsList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChampionHolder {

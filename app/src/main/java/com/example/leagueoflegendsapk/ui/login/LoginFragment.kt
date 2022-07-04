@@ -38,7 +38,6 @@ class LoginFragment : Fragment() {
             summonerName = view.findViewById<TextView>(R.id.txtSummonersNameLogin).text.toString()
             setSummonersNameSharedPref(summonerName)
             setSummonerIdSharedPref()
-            findNavController().navigate(R.id.action_loginFragment_to_mainActivity)
         }
 
         return view
@@ -65,9 +64,14 @@ class LoginFragment : Fragment() {
                 editor.putInt("profileIconId", it.profileIconId)
                 editor.putInt("summonerLevel", it.summonerLevel)
                 editor.apply()
+                navigateForward()
             }
             }
         }
+    }
+
+    private fun navigateForward() {
+        findNavController().navigate(R.id.action_loginFragment_to_mainActivity)
     }
 
 }

@@ -121,10 +121,7 @@ class HomeFragment : Fragment() {
                 if (it == "") binding.txtSummonersNameHome.text = "Summoner Name no existe"
                 else {
                     summonerId = it
-                    val editor = requireContext().getSharedPreferences("lolSharedPreferences",
-                        AppCompatActivity.MODE_PRIVATE).edit()
-                    editor.putString("summonerId", summonerId)
-                    editor.apply()
+                    sharedPref.edit().putString("summonerId", summonerId).apply()
                     fetchBestChampions(requireActivity())
                 }
             }

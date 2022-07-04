@@ -8,9 +8,9 @@
 
     <Button
         android:id="@+id/btnLogoutConfig"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:layout_width="142dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="152dp"
         android:text="@string/title_logout"
         android:textAllCaps="false"
         app:cornerRadius="15dp"
@@ -22,9 +22,41 @@
         android:id="@+id/switchThemeConfig"
         android:layout_width="136dp"
         android:layout_height="79dp"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="140dp"
-        android:text="Switch"
+        android:layout_marginTop="104dp"
+        android:text="@string/title_switchNightMode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgSummonerProfileConfig" />
+
+    <ImageView
+        android:id="@+id/imgSummonerProfileConfig"
+        android:layout_width="102dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="124dp"
+        android:src="@android:drawable/btn_star_big_on"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtSummonerNameConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="136dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgSummonerProfileConfig"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtSummonerLevelConfig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imgSummonerProfileConfig"
+        app:layout_constraintTop_toBottomOf="@+id/txtSummonerNameConfig" />
 </androidx.constraintlayout.widget.ConstraintLayout>

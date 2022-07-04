@@ -33,6 +33,13 @@ class ConfigurationFragment : Fragment() {
         val configurationViewModel =
             ViewModelProvider(this).get(ConfigurationViewModel::class.java)
 
+        /*
+        val textView: TextView = binding.textNotifications
+        configurationViewModel.text.observe(viewLifecycleOwner) {
+            textView.text = it
+        }
+        */
+
         _binding = FragmentConfigurationBinding.inflate(inflater, container, false)
 
         sharedPref = requireContext().getSharedPreferences("lolSharedPreferences", Context.MODE_PRIVATE)
@@ -43,12 +50,7 @@ class ConfigurationFragment : Fragment() {
             requireActivity().finish()
         }
 
-        /*
-        val textView: TextView = binding.textNotifications
-        configurationViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        */
+        binding.txtSummonerNameConfig.text = sharedPref.getString("summonersName", "")!!
 
         if (sharedPref.getBoolean("nightMode", false)) {
             binding.switchThemeConfig.isChecked = true
@@ -58,13 +60,11 @@ class ConfigurationFragment : Fragment() {
                 buttonView, isChecked ->
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                requireContext().getSharedPreferences("lolSharedPreferences", AppCompatActivity.MODE_PRIVATE)
-                    .edit().putBoolean("nightMode", true).apply()
+                sharedPref.edit().putBoolean("nightMode", true).apply()
             }
             else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                requireContext().getSharedPreferences("lolSharedPreferences", AppCompatActivity.MODE_PRIVATE)
-                    .edit().putBoolean("nightMode", false).apply()
+                sharedPref.edit().putBoolean("nightMode", false).apply()
             }
         }
 

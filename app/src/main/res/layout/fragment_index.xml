@@ -13,6 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:elevation="15dp"
+        android:foreground="@android:drawable/gallery_thumb"
+        android:foregroundGravity="fill"
+        android:foregroundTint="@color/third_blue"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +28,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:text="@string/title_weeklyRotation"
-            android:textSize="20sp" />
+            android:textColor="@color/primary_blue"
+            android:textSize="24sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerRotacionSemanal"
@@ -37,19 +41,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:elevation="15dp"
             android:text="@string/hint_seeMore"
-            tools:ignore="DuplicateSpeakableTextCheck" />
+            android:textAllCaps="false"
+            app:cornerRadius="15dp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutHomeLineas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="15dp"
+        android:layout_margin="15dp"
         android:elevation="15dp"
+        android:foreground="@android:drawable/gallery_thumb"
+        android:foregroundGravity="fill"
+        android:foregroundTint="@color/third_blue"
         android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingBottom="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutHomeRotacionSemanal">
@@ -58,9 +67,11 @@
             android:id="@+id/txtTitleRanked"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:gravity="center_horizontal"
             android:text="@string/title_ranked"
-            android:textSize="20sp" />
+            android:textColor="@color/primary_blue"
+            android:textSize="24sp" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -105,6 +116,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:elevation="15dp"
+        android:foreground="@android:drawable/gallery_thumb"
+        android:foregroundGravity="fill"
+        android:foregroundTint="@color/third_blue"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +131,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
             android:text="@string/title_bestChampions"
-            android:textSize="20sp" />
+            android:textColor="@color/primary_blue"
+            android:textSize="24sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTopMasteryChampions"
@@ -132,7 +147,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textSize="34sp"
+        android:textColor="@color/secondary_blue"
+        android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"

@@ -10,9 +10,12 @@
     <LinearLayout
         android:id="@+id/layoutHomeRotacionSemanal"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:elevation="20dp"
+        android:elevation="15dp"
+        android:foreground="@android:drawable/gallery_thumb"
+        android:foregroundGravity="fill"
+        android:foregroundTint="@color/third_blue"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,31 +25,53 @@
             android:id="@+id/txtTituloRotacionSemanal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:text="Rotacion Semanal"
-            android:textSize="20sp" />
+            android:text="@string/title_weeklyRotation"
+            android:textColor="@color/primary_blue"
+            android:textSize="24sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerRotacionSemanal"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btnVerMasRotacionSemanal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Ver mas" />
+            android:elevation="15dp"
+            android:text="@string/hint_seeMore"
+            android:textAllCaps="false"
+            app:cornerRadius="15dp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layoutHomeLineas"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        android:elevation="15dp"
+        android:foreground="@android:drawable/gallery_thumb"
+        android:foregroundGravity="fill"
+        android:foregroundTint="@color/third_blue"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/layoutHomeRotacionSemanal"
-        tools:layout_editor_absoluteX="1dp">
+        android:paddingTop="2dp"
+        android:paddingBottom="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutHomeRotacionSemanal">
+
+        <TextView
+            android:id="@+id/txtTitleRanked"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center_horizontal"
+            android:text="@string/title_ranked"
+            android:textColor="@color/primary_blue"
+            android:textSize="24sp" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -79,7 +104,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pagerHomeLanes"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
@@ -88,41 +113,43 @@
     <LinearLayout
         android:id="@+id/layoutHomeMisCampeones"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
+        android:elevation="15dp"
+        android:foreground="@android:drawable/gallery_thumb"
+        android:foregroundGravity="fill"
+        android:foregroundTint="@color/third_blue"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/layoutHomeLineas"
-        tools:layout_editor_absoluteX="15dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutHomeLineas">
 
         <TextView
             android:id="@+id/txtTituloMejoresCampeones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:text="Mis mejores campeones"
-            android:textSize="20sp" />
+            android:text="@string/title_bestChampions"
+            android:textColor="@color/primary_blue"
+            android:textSize="24sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTopMasteryChampions"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
-
-        <Button
-            android:id="@+id/btnVerMasRotacionSemanal2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Ver mas" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/txtSummonersNameHome"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:textSize="24sp"
+        android:textColor="@color/secondary_blue"
+        android:textSize="35sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"

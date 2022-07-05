@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitManager {
 
-    private val apiKey = "RGAPI-2faea3cc-eb3e-4390-bb93-493686afec35"
+    private val apiKey = "RGAPI-900392ae-7549-44ca-9f60-52741220f499"
 
     /**
      * Build Retrofit Call for Riot Games API with BaseURL

@@ -20,5 +20,6 @@
     <string name="title_losses">Derrotas</string>
     <string name="title_switchNightMode">Modo oscuro</string>
     <string name="title_level">Nivel</string>
+    <string name="search_champion">Buscar Campeon</string>
 
 </resources>

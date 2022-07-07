@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leagueoflegendsapk.adapters.ChampionRotationAdapter
@@ -60,7 +61,7 @@ class ChampionsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        recyclerRotacionSemanal.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerRotacionSemanal.layoutManager = GridLayoutManager(context, 4, LinearLayoutManager.VERTICAL, false)
         championRotationAdapter = ChampionRotationAdapter(tempChampionsList) { x ->
             onItemClick(x)
         }
